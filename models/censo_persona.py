@@ -4,6 +4,8 @@ import uuid
 class CensoPersona(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     fecha = db.Column(db.DateTime)
+    longitud = db.Column(db.Numeric(), nullable=False)
+    latitud = db.Column(db.Numeric(), nullable=False)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, server_default=db.func.now(), server_onupdate=db.func.now())
     external_id = db.Column(db.String(60), default=str(uuid.uuid4()),nullable=False)
