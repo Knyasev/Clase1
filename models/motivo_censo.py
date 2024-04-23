@@ -11,4 +11,13 @@ class Motivo_Censo(db.Model):
     censo_persona_id = db.Column(db.Integer, db.ForeignKey('censo_persona.id'), nullable=False)
     censo_persona = db.relationship('CensoPersona', backref=db.backref('motivo_censos', lazy=True))
     #RELACION DE 1 
-    catalogos = db.relationship('Catalogo_Motivo', backref='motivo_censo', lazy=True)
+    catalogos = db.relationship('Catalogo_Motivo', backref='motivo_censo', lazy=True) @property
+    
+    def nombre(self):
+        return self._nombre
+
+    @nombre.setter
+    def nombre(self, value):
+        if not value:
+            raise ValueError("El nombre no puede estar vacío")
+        self._nombre = value
