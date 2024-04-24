@@ -6,6 +6,7 @@ from models.censo import Censo
 from models.censo_persona import CensoPersona
 from models.motivo_censo import Motivo_Censo
 from models.catalogo_motivo import Catalogo_Motivo
+from models.cuenta import Cuenta
 api = Blueprint('api', __name__)
 
 @api.route("/")
