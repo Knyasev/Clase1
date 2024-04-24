@@ -8,7 +8,7 @@ class RolController:
         return Rol.query.all()
     
     def save(self, data):
-        rol = rol()
+        rol = Rol()
         rol.nombre = data.get("nombre")
         rol.descripcion = data.get("descripcion")
         rol.estado = data.get("estado")

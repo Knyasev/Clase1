@@ -6,7 +6,7 @@ class Persona(db.Model):
     apellido = db.Column(db.String(100))
     estado_civil = db.Column(db.Boolean, default=True)
     external_id = db.Column(db.String(60), default=str(uuid.uuid4()),nullable=False)
-    rol_id = db.Column(db.Integer, db.ForeignKey('rol.id'), unique=True)
+    rol_id = db.Column(db.Integer, db.ForeignKey('rol.id'), unique=False)
     rol = db.relationship('Rol', back_populates='persona')
     cuenta = db.relationship('Cuenta', back_populates='persona')
     #relacion de 1 a muchos 
