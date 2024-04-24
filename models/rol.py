@@ -6,5 +6,13 @@ class Rol(db.Model):
     descripcion = db.Column(db.String(100))
     estado = db.Column(db.Boolean, default=True)
     external_id = db.Column(db.String(60))
-    persona_id = db.Column(db.Integer, db.ForeignKey('persona.id'), unique=True)
-    persona = db.relationship("Persona", back_populates="rol")
+    persona = db.relationship('Persona', back_populates='rol')
+
+   
+    def serialize(self):
+         return {
+        'nombre': self.nombre,
+        'descripcion': self.descripcion,
+        'external_id': self.external_id,
+        'estado': self.estado == 1 if self.estado else 0,
+    }
