@@ -10,3 +10,9 @@ class Cuenta(db.Model):
     external_id = db.Column(db.String(60), default=str(uuid.uuid4()),nullable=False)
     persona_id = db.Column(db.Integer, db.ForeignKey('persona.id'), nullable=False)
     persona = db.relationship('Persona', backref='cuentas', lazy=True)
+
+    def serialize(self):
+        return {
+        'usuario': self.usuario,
+        'external_id': self.external_id,
+    }

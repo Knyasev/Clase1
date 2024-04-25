@@ -12,7 +12,5 @@ class Rol(db.Model):
     def serialize(self):
          return {
         'nombre': self.nombre,
-        'descripcion': self.descripcion,
         'external_id': self.external_id,
-        'estado': self.estado == 1 if self.estado else 0,
     }
