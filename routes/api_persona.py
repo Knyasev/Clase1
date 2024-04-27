@@ -66,7 +66,7 @@ def guardar_censador():
         )
     else:
         return make_response(
-            jsonify({"msg" : "ERROR", "code" : 400, "datos" :{"error" : Error.error[str(id)]}}), 
+           jsonify({"msg" : "ERROR", "code" : 400, "datos" :{"error" : Error.error[str(id)]}}), 
             400
         )
 
@@ -83,9 +83,9 @@ def buscar_external(external):
     )
 
 
-
+# Ruta para modificar un censo
 @api_persona.route("/persona/<external_id>", methods=['POST'])
-def api_modificar(external_id):
+def modificar(external_id):
     data = request.get_json()  # Obtiene los datos del cuerpo de la solicitud HTTP
     if data is None:
         return make_response(jsonify({"msg": "Bad Request", "code": 400}), 400)
@@ -104,7 +104,9 @@ def api_modificar(external_id):
 def api_modificar_censador(external_id):
     data = request.get_json()  # Obtiene los datos del cuerpo de la solicitud HTTP
     if data is None:
-        return make_response(jsonify({"msg": "Bad Request", "code": 400}), 400)
+        return make_response(jsonify({"msg" : "ERROR", "code" : 400, "datos" :{"error" : Error.error[str(id)]}}), 
+            400
+        )
 
     persona = personaC.modificar_censador(external_id, data)
     search = persona.serialize()
@@ -112,6 +114,53 @@ def api_modificar_censador(external_id):
     
 
     if persona is None or persona == -1:
-        return make_response(jsonify({"msg": "Not Found", "code": 404}), 404)
+        return make_response(jsonify({"msg" : "ERROR", "code" : 400, "datos" :{"error" : Error.error[str(id)]}}), 
+            400
+        )
 
     return make_response(jsonify({"msg": "OK", "code": 200, "datos": search}), 200)
+
+
+@api_persona.route("/persona/<external_id>/copiar", methods=['POST'])
+def api_copiar(external_id):
+    persona = personaC.copiar(external_id)
+    if persona is None or persona == -1:
+        return make_response(jsonify({"msg" : "ERROR", "code" : 400, "datos" :{"error" : Error.error[str(id)]}}), 
+            400
+        )
+
+    search = persona.serialize()
+    search['estado_civil'] = search['estado_civil'].serialize()
+
+    return make_response(jsonify({"msg": "OK", "code": 200, "datos": search}), 200)
+
+
+@api_persona.route("/persona/<external_id>/desactivar", methods=['GET'])
+def desactivar(external_id):
+    persona = personaC.desactivar(external_id)
+    if persona is None or persona == -1:
+        return make_response(jsonify({"msg" : "ERROR", "code" : 400, "datos" :{"error" : "Error desconocido"}}), 
+        400
+    )
+
+    persona = personaC.buscar_external(external_id)
+    search = persona.serialize()
+    search['estado_civil'] = search['estado_civil'].serialize()
+
+
+    return make_response(jsonify({"msg": "OK", "code": 200, "datos": search}), 200)
+
+
+@api_persona.route("/persona/<external_id>/activar", methods=['GET'])
+def activar_cuenta(external_id):
+    persona = personaC.activar_cuenta(external_id)
+    if persona is None or persona == -1:
+        return make_response(jsonify({"msg" : "ERROR", "code" : 400, "datos" :{"error" : "Error desconocido"}}), 
+        400
+    )
+
+    persona = personaC.buscar_external(external_id)
+    search = persona.serialize()
+    search['estado_civil'] = search['estado_civil'].serialize()
+    return make_response(jsonify({"msg": "OK", "code": 200, "datos": search}), 200)
+

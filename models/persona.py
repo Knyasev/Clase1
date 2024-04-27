@@ -23,7 +23,7 @@ class Persona(db.Model):
         'apellido': self.apellido,
         'estado_civil': self.estado_civil,
         'external_id': self.external_id,
-        'cuenta': [cuenta.serialize() for cuenta in self.cuenta],
+        'cuenta': [cuenta.serialize() for cuenta in self.cuenta if cuenta.estado == 1],
         'rol': self.rol.serialize() if self.rol else None,
     }
 

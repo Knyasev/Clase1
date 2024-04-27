@@ -15,4 +15,5 @@ class Cuenta(db.Model):
         return {
         'usuario': self.usuario,
         'external_id': self.external_id,
+        'estado': self.estado,
     }

@@ -73,30 +73,51 @@ class PersonaController:
             persona.nombre = data.get("nombre") 
             persona.estado_civil = data.get("estado_civil")
             persona.fecha_nacimiento = data.get("fecha_nacimiento")
-
+            persona.external_id = uuid.uuid4()
             db.session.add(persona)
             db.session.commit()
             return persona
         else:
             return -1
+
+        
+    def copiar(self, external_id):
+            persona = self.buscar_external(external_id)
+            if persona:
+                nueva_persona = Persona()
+                nueva_persona.apellido = persona.apellido
+                nueva_persona.nombre = persona.nombre
+                nueva_persona.estado_civil = persona.estado_civil
+                nueva_persona.fecha_nacimiento = persona.fecha_nacimiento
+                nueva_persona.rol_id = persona.rol_id
+                db.session.add(nueva_persona)
+                db.session.commit()
+                return nueva_persona
+            else:
+                return -1
         
 
-    def modificar_censador(self,external_id,data):
+    def desactivar(self, external_id):
         persona = self.buscar_external(external_id)
-        if persona:
-            persona.apellido = data.get("apellido")
-            persona.nombre = data.get("nombre")
-            persona.estado_civil = data.get("estado_civil")
-            persona.fecha_nacimiento = data.get("fecha_nacimiento")
-            db.session.add(persona)
-            db.session.commit()
-            cuenta = Cuenta.query.filter_by(usuario=data.get("correo")).first()
-            if cuenta:
-                cuenta.usuario = data.get("correo")
-                cuenta.clave = data.get("clave")
-                cuenta.persona_id = persona.id
-                db.session.add(cuenta)
-                db.session.commit()
-            return persona
-        else:
-            return -1
+        if persona and persona.rol.nombre == 'CENSADOR':                
+                cuenta = Cuenta.query.filter_by(persona_id=persona.id).first()
+                if cuenta:
+                    cuenta.estado = 0  # Cambia el estado de la cuenta a 0 (desactivado)
+                    db.session.add(cuenta)
+                    db.session.commit()
+                return cuenta
+        return False
+    
+
+    def activar_cuenta(self, external_id):
+        persona = self.buscar_external(external_id)
+        if persona and persona.rol.nombre == 'CENSADOR':                
+                cuenta = Cuenta.query.filter_by(persona_id=persona.id).first()
+                if cuenta:
+                    cuenta.estado = 1  # Cambia el estado de la cuenta a 0 (desactivado)
+                    db.session.add(cuenta)
+                    db.session.commit()
+                return cuenta
+        return False
+        
+
