@@ -19,10 +19,14 @@ def create_app():
         from routes.api_persona import api_persona
         from routes.api_rol import api_rol
         from routes.api_censo import api_censo
+        from routes.api_censo_persona import api_censo_persona
+        from routes.api_motivo import api_motivo
         app.register_blueprint(api)
         app.register_blueprint(api_persona)
         app.register_blueprint(api_rol)
         app.register_blueprint(api_censo)
+        app.register_blueprint(api_censo_persona)
+        app.register_blueprint(api_motivo)
         # Creacion de tablas en la base de datos
         db.create_all()
         #db.drop_all()

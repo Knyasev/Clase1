@@ -6,5 +6,4 @@ class TipoEstadoCivil(Enum):
     DIVORCIADO = 'Divorciado'
     VIUDO = 'Viudo'
 
-    def serialize(self):
-        return self.name
+    

@@ -12,10 +12,20 @@ schema = {
         'fecha_inicio': {'type': 'string'},
         'fecha_fin': {'type': 'string'},
         'estado': {'type': 'boolean'},
+        'motivo': {'type': 'string'},
 
         
     },
-    'required': ['fecha_inicio', 'fecha_fin', 'estado' ]}
+    'required': ['fecha_inicio', 'fecha_fin', 'estado' , 'motivo']}
+censo_persona_schema = {
+    "type": "object",
+    'properties': {
+        "latitud": {"type": "number"},
+        "longitud": {"type": "number"},
+        "motivo": {"type": "string"},
+    },
+    'required': ["latitud", "longitud", "motivo"]
+}
 
 
 @api_censo.route("/censo")
@@ -101,3 +111,17 @@ def activar (external_id):
     return make_response(jsonify({"msg": "OK", "code": 200, "datos": search}), 200)
 
 
+@api_censo.route("/guardar/censo/persona", methods=["POST"])
+@expects_json(censo_persona_schema)
+def guardar_datos():
+    data = request.json
+    id_censo_persona = censoC.guardar_datos_censo(data)
+    if id_censo_persona == -4:
+        return make_response(
+            jsonify({"msg": "Motivo no encontrado", "code": 404}),
+            404
+        )
+    return make_response(
+        jsonify({"msg": "OK", "code": 200, "datos": id_censo_persona}),
+        200
+    )
