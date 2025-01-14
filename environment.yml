@@ -1,13 +1,8 @@
+name: myenv
 dependencies:
-  - name: pip
-    version: latest
-  - name: setuptools
-    version: latest
-  - name: wheel
-    version: latest
-  - name: flask
-    version: 1.7.0
-  - name: python-dotenv
-    version: 1.0.1
-  - name: greenlet
-    version: latest
+  - pip
+  - setuptools
+  - wheel
+  - flask=1.7.0
+  - python-dotenv=1.0.1
+  - greenlet
