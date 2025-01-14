@@ -1,8 +1,11 @@
 name: myenv
 dependencies:
+  - python=3.10
   - pip
   - setuptools
   - wheel
   - flask=1.7.0
   - python-dotenv=1.0.1
   - greenlet
+  - pip:
+    - some-pip-package
